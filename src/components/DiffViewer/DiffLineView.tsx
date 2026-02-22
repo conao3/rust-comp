@@ -1,4 +1,5 @@
 import type { DiffLine } from "../../types/diff";
+import { highlightLine } from "../../utils/highlight";
 
 interface Props {
   line: DiffLine;
@@ -16,10 +17,31 @@ function LineNumber({ num }: { num?: number }) {
   );
 }
 
+interface LineContentProps {
+  content: string;
+  language?: string;
+}
+
+function LineContent({ content, language }: LineContentProps) {
+  const html = highlightLine(content, language);
+  return (
+    <td
+      className="diff-line-content"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
 /**
  * Render a single diff line in unified view.
  */
-export function DiffLineUnified({ line }: { line: DiffLine }) {
+export function DiffLineUnified({
+  line,
+  language,
+}: {
+  line: DiffLine;
+  language?: string;
+}) {
   const typeClass = {
     added: "diff-line-added",
     removed: "diff-line-removed",
@@ -39,9 +61,10 @@ export function DiffLineUnified({ line }: { line: DiffLine }) {
       <LineNumber num={line.oldLineNumber} />
       <LineNumber num={line.newLineNumber} />
       <td className="diff-line-marker">{marker}</td>
-      <td className="diff-line-content">
-        <span>{line.content}</span>
-      </td>
+      <LineContent
+        content={line.type === "no_newline" ? line.content : line.content}
+        language={line.type !== "no_newline" ? language : undefined}
+      />
     </tr>
   );
 }
@@ -49,9 +72,14 @@ export function DiffLineUnified({ line }: { line: DiffLine }) {
 /**
  * Render a single diff line for the left side of split view.
  */
-export function DiffLineSplitLeft({ line }: { line: DiffLine }) {
+export function DiffLineSplitLeft({
+  line,
+  language,
+}: {
+  line: DiffLine;
+  language?: string;
+}) {
   if (line.type === "added") {
-    // Empty cell on left side for added lines
     return (
       <tr className="diff-line diff-line-empty">
         <td className="diff-line-number"></td>
@@ -71,9 +99,10 @@ export function DiffLineSplitLeft({ line }: { line: DiffLine }) {
     <tr className={`diff-line ${typeClass}`}>
       <LineNumber num={line.oldLineNumber} />
       <td className="diff-line-marker">{marker}</td>
-      <td className="diff-line-content">
-        <span>{line.content}</span>
-      </td>
+      <LineContent
+        content={line.content}
+        language={line.type !== "no_newline" ? language : undefined}
+      />
     </tr>
   );
 }
@@ -81,9 +110,14 @@ export function DiffLineSplitLeft({ line }: { line: DiffLine }) {
 /**
  * Render a single diff line for the right side of split view.
  */
-export function DiffLineSplitRight({ line }: { line: DiffLine }) {
+export function DiffLineSplitRight({
+  line,
+  language,
+}: {
+  line: DiffLine;
+  language?: string;
+}) {
   if (line.type === "removed") {
-    // Empty cell on right side for removed lines
     return (
       <tr className="diff-line diff-line-empty">
         <td className="diff-line-number"></td>
@@ -103,20 +137,21 @@ export function DiffLineSplitRight({ line }: { line: DiffLine }) {
     <tr className={`diff-line ${typeClass}`}>
       <LineNumber num={line.newLineNumber} />
       <td className="diff-line-marker">{marker}</td>
-      <td className="diff-line-content">
-        <span>{line.content}</span>
-      </td>
+      <LineContent
+        content={line.content}
+        language={line.type !== "no_newline" ? language : undefined}
+      />
     </tr>
   );
 }
 
-export default function DiffLineView({ line, viewMode, side }: Props) {
+export default function DiffLineView({ line, language, viewMode, side }: Props) {
   if (viewMode === "split") {
     return side === "left" ? (
-      <DiffLineSplitLeft line={line} />
+      <DiffLineSplitLeft line={line} language={language} />
     ) : (
-      <DiffLineSplitRight line={line} />
+      <DiffLineSplitRight line={line} language={language} />
     );
   }
-  return <DiffLineUnified line={line} />;
+  return <DiffLineUnified line={line} language={language} />;
 }

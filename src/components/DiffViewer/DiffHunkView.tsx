@@ -16,7 +16,7 @@ function parseHunkContext(header: string): string {
   return match?.[1]?.trim() ?? "";
 }
 
-export default function DiffHunkView({ hunk, viewMode }: Props) {
+export default function DiffHunkView({ hunk, language, viewMode }: Props) {
   const context = parseHunkContext(hunk.header);
 
   if (viewMode === "unified") {
@@ -35,7 +35,7 @@ export default function DiffHunkView({ hunk, viewMode }: Props) {
         </tr>
         {/* Diff lines */}
         {hunk.lines.map((line, i) => (
-          <DiffLineUnified key={i} line={line} />
+          <DiffLineUnified key={i} line={line} language={language} />
         ))}
       </>
     );
@@ -71,7 +71,7 @@ export default function DiffHunkView({ hunk, viewMode }: Props) {
             <table className="diff-split-inner">
               <tbody>
                 {left ? (
-                  <DiffLineSplitLeft line={left} />
+                  <DiffLineSplitLeft line={left} language={language} />
                 ) : (
                   <tr className="diff-line diff-line-empty">
                     <td className="diff-line-number"></td>
@@ -89,7 +89,7 @@ export default function DiffHunkView({ hunk, viewMode }: Props) {
             <table className="diff-split-inner">
               <tbody>
                 {right ? (
-                  <DiffLineSplitRight line={right} />
+                  <DiffLineSplitRight line={right} language={language} />
                 ) : (
                   <tr className="diff-line diff-line-empty">
                     <td className="diff-line-number"></td>

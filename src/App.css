@@ -3,6 +3,9 @@
    Implements GitHub-identical diff UI with theme switching.
    ============================================================ */
 
+/* === highlight.js: light themes use github style, dark themes override === */
+@import "highlight.js/styles/github.css";
+
 /* === Import all themes === */
 @import "./themes/github-light.css";
 @import "./themes/github-dark.css";
@@ -688,4 +691,92 @@ body {
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--color-fg-default);
+}
+
+/* ============================================================
+   Highlight.js - Dark theme token overrides
+   Applied when using github-dark or gitlab-dark theme.
+   ============================================================ */
+
+/* Override hljs background to be transparent (our diff CSS handles backgrounds) */
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Dark theme token colors */
+[data-theme="github-dark"],
+[data-theme="gitlab-dark"] {
+  --hljs-comment: #8b949e;
+  --hljs-keyword: #ff7b72;
+  --hljs-string: #a5d6ff;
+  --hljs-number: #79c0ff;
+  --hljs-title: #d2a8ff;
+  --hljs-attr: #79c0ff;
+  --hljs-built-in: #ffa657;
+  --hljs-type: #ffa657;
+  --hljs-literal: #79c0ff;
+  --hljs-meta: #8b949e;
+}
+
+[data-theme="github-dark"] .hljs-comment,
+[data-theme="github-dark"] .hljs-quote,
+[data-theme="gitlab-dark"] .hljs-comment,
+[data-theme="gitlab-dark"] .hljs-quote {
+  color: #8b949e;
+}
+
+[data-theme="github-dark"] .hljs-keyword,
+[data-theme="github-dark"] .hljs-selector-tag,
+[data-theme="github-dark"] .hljs-deletion,
+[data-theme="gitlab-dark"] .hljs-keyword,
+[data-theme="gitlab-dark"] .hljs-selector-tag {
+  color: #ff7b72;
+}
+
+[data-theme="github-dark"] .hljs-string,
+[data-theme="github-dark"] .hljs-attr,
+[data-theme="github-dark"] .hljs-template-variable,
+[data-theme="github-dark"] .hljs-variable,
+[data-theme="gitlab-dark"] .hljs-string,
+[data-theme="gitlab-dark"] .hljs-attr {
+  color: #a5d6ff;
+}
+
+[data-theme="github-dark"] .hljs-number,
+[data-theme="github-dark"] .hljs-literal,
+[data-theme="github-dark"] .hljs-link,
+[data-theme="gitlab-dark"] .hljs-number,
+[data-theme="gitlab-dark"] .hljs-literal {
+  color: #79c0ff;
+}
+
+[data-theme="github-dark"] .hljs-title,
+[data-theme="github-dark"] .hljs-name,
+[data-theme="github-dark"] .hljs-selector-id,
+[data-theme="github-dark"] .hljs-selector-class,
+[data-theme="gitlab-dark"] .hljs-title,
+[data-theme="gitlab-dark"] .hljs-name {
+  color: #d2a8ff;
+}
+
+[data-theme="github-dark"] .hljs-built_in,
+[data-theme="github-dark"] .hljs-type,
+[data-theme="github-dark"] .hljs-class,
+[data-theme="gitlab-dark"] .hljs-built_in,
+[data-theme="gitlab-dark"] .hljs-type {
+  color: #ffa657;
+}
+
+[data-theme="github-dark"] .hljs-meta,
+[data-theme="github-dark"] .hljs-addition,
+[data-theme="gitlab-dark"] .hljs-meta {
+  color: #8b949e;
+}
+
+[data-theme="github-dark"] .hljs-symbol,
+[data-theme="github-dark"] .hljs-bullet,
+[data-theme="gitlab-dark"] .hljs-symbol,
+[data-theme="gitlab-dark"] .hljs-bullet {
+  color: #79c0ff;
 }

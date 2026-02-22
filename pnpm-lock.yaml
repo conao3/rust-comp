@@ -14,6 +14,9 @@ importers:
       '@tauri-apps/plugin-opener':
         specifier: ^2
         version: 2.5.3
+      '@types/highlight.js':
+        specifier: ^10.1.0
+        version: 10.1.0
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
@@ -522,6 +525,10 @@ packages:
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
+
+  '@types/highlight.js@10.1.0':
+    resolution: {integrity: sha512-77hF2dGBsOgnvZll1vymYiNUtqJ8cJfXPD6GG/2M0aLRc29PkvB7Au6sIDjIEFcSICBhCh2+Pyq6WSRS7LUm6A==}
+    deprecated: This is a stub types definition. highlight.js provides its own type definitions, so you do not need this installed.
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -1090,6 +1097,10 @@ snapshots:
       '@babel/types': 7.29.0
 
   '@types/estree@1.0.8': {}
+
+  '@types/highlight.js@10.1.0':
+    dependencies:
+      highlight.js: 11.11.1
 
   '@types/react-dom@19.2.3(@types/react@19.2.14)':
     dependencies:
