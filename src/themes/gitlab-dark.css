@@ -1,0 +1,81 @@
+/**
+ * GitLab Dark theme variables.
+ * Colors inspired by GitLab's Pajamas dark mode design system.
+ */
+
+[data-theme="gitlab-dark"] {
+  /* Canvas */
+  --color-canvas-default: #1f1e24;
+  --color-canvas-subtle: #18171d;
+  --color-canvas-overlay: #27262d;
+
+  /* Foreground */
+  --color-fg-default: #dfdfe6;
+  --color-fg-muted: #a09fa8;
+  --color-fg-subtle: #89888f;
+  --color-fg-on-emphasis: #ffffff;
+
+  /* Borders */
+  --color-border-default: #3d3c45;
+  --color-border-muted: #303038;
+  --color-border-subtle: #2a2930;
+
+  /* Accent */
+  --color-accent-fg: #6ea8fe;
+  --color-accent-emphasis: #4c8ef4;
+  --color-accent-muted: #1d2b46;
+  --color-accent-subtle: #162038;
+
+  /* Diff: additions */
+  --color-diff-addition-fg: #52b87a;
+  --color-diff-addition-bg: #0d2614;
+  --color-diff-addition-num-bg: #133d1e;
+  --color-diff-addition-num-fg: #52b87a;
+  --color-diff-addition-word-bg: #1e5830;
+
+  /* Diff: deletions */
+  --color-diff-deletion-fg: #f78166;
+  --color-diff-deletion-bg: #3d0e0a;
+  --color-diff-deletion-num-bg: #5c1510;
+  --color-diff-deletion-num-fg: #f78166;
+  --color-diff-deletion-word-bg: #7c2017;
+
+  /* Diff: hunk header */
+  --color-diff-hunk-header-bg: #1d2b46;
+  --color-diff-hunk-header-fg: #6ea8fe;
+  --color-diff-hunk-header-num-bg: #162038;
+
+  /* Neutral diff */
+  --color-diff-neutral-bg: transparent;
+  --color-diff-neutral-num-bg: var(--color-canvas-subtle);
+
+  /* Header */
+  --color-header-bg: #18171d;
+  --color-header-fg: #dfdfe6;
+
+  /* Toolbar */
+  --toolbar-bg: #18171d;
+  --toolbar-border: #3d3c45;
+  --toolbar-fg: #dfdfe6;
+
+  /* File header */
+  --file-header-bg: #18171d;
+  --file-header-border: #3d3c45;
+  --file-header-fg: #dfdfe6;
+
+  /* Line numbers */
+  --line-num-bg: #18171d;
+  --line-num-fg: #a09fa8;
+  --line-num-width: 50px;
+
+  /* Font */
+  --font-mono: "GitLab Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-size-diff: 12px;
+  --font-size-ui: 14px;
+
+  /* Badge colors */
+  --badge-added-bg: #133d1e;
+  --badge-deleted-bg: #5c1510;
+  --badge-renamed-bg: #4a3200;
+  --badge-binary-bg: #303038;
+}

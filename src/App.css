@@ -1,0 +1,691 @@
+/* ============================================================
+   App.css - Global styles for comp (local diff viewer)
+   Implements GitHub-identical diff UI with theme switching.
+   ============================================================ */
+
+/* === Import all themes === */
+@import "./themes/github-light.css";
+@import "./themes/github-dark.css";
+@import "./themes/gitlab-light.css";
+@import "./themes/gitlab-dark.css";
+
+/* === CSS Reset / Base === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--color-canvas-default);
+  color: var(--color-fg-default);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: var(--font-size-ui);
+  line-height: 1.5;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* === App Layout === */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  min-width: 0;
+}
+
+/* ============================================================
+   Toolbar
+   ============================================================ */
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 48px;
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--toolbar-border);
+  gap: 12px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.toolbar-logo {
+  color: var(--color-accent-fg);
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--toolbar-fg);
+}
+
+.toolbar-file-count {
+  font-size: 12px;
+  color: var(--color-fg-muted);
+  background: var(--color-border-muted);
+  padding: 1px 8px;
+  border-radius: 20px;
+}
+
+.toolbar-center {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-brand {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.brand-github {
+  background: #24292f;
+  color: #ffffff;
+}
+
+.brand-gitlab {
+  background: #fc6d26;
+  color: #ffffff;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-view-toggle {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  background: var(--color-canvas-default);
+  color: var(--color-fg-muted);
+  border: none;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+  border-right: 1px solid var(--color-border-default);
+}
+
+.toolbar-btn:last-child {
+  border-right: none;
+}
+
+.toolbar-btn:hover {
+  background: var(--color-canvas-subtle);
+  color: var(--color-fg-default);
+}
+
+.toolbar-btn.active {
+  background: var(--color-accent-emphasis);
+  color: var(--color-fg-on-emphasis);
+}
+
+.toolbar-theme-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-fg-muted);
+}
+
+.toolbar-theme-select {
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  background: var(--color-canvas-default);
+  color: var(--color-fg-default);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  padding-right: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23656d76' d='M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+}
+
+/* ============================================================
+   File Tree Sidebar
+   ============================================================ */
+.filetree {
+  width: 240px;
+  min-width: 200px;
+  border-right: 1px solid var(--color-border-default);
+  background: var(--color-canvas-subtle);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.filetree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.filetree-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-fg-muted);
+}
+
+.filetree-count {
+  font-size: 11px;
+  color: var(--color-fg-muted);
+  background: var(--color-border-muted);
+  padding: 0 6px;
+  border-radius: 20px;
+}
+
+.filetree-summary {
+  display: flex;
+  gap: 8px;
+  padding: 4px 12px 8px;
+  font-size: 11px;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.filetree-additions {
+  color: var(--color-diff-addition-fg);
+  font-weight: 600;
+}
+
+.filetree-deletions {
+  color: var(--color-diff-deletion-fg);
+  font-weight: 600;
+}
+
+.filetree-list {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.filetree-item {
+  border-bottom: 1px solid transparent;
+}
+
+.filetree-item-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px 12px;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--color-fg-default);
+  font-size: 12px;
+  transition: background 0.1s;
+}
+
+.filetree-item-btn:hover {
+  background: var(--color-border-muted);
+}
+
+.filetree-icon {
+  flex-shrink: 0;
+}
+
+.filetree-filename {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.filetree-dir {
+  font-size: 10px;
+  color: var(--color-fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 80px;
+}
+
+.filetree-status {
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.filetree-status-added { color: var(--color-diff-addition-fg); }
+.filetree-status-deleted { color: var(--color-diff-deletion-fg); }
+.filetree-status-modified { color: var(--color-fg-muted); }
+.filetree-status-renamed { color: var(--color-accent-fg); }
+
+/* ============================================================
+   Diff Viewer
+   ============================================================ */
+.diff-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* === Diff File Block === */
+.diff-file {
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-diff);
+}
+
+/* === File Header === */
+.diff-file-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  background: var(--file-header-bg);
+  border-bottom: 1px solid var(--file-header-border);
+  gap: 8px;
+  min-height: 40px;
+}
+
+.diff-file-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-fg-muted);
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.diff-file-collapse-btn:hover {
+  background: var(--color-border-muted);
+  color: var(--color-fg-default);
+}
+
+.diff-collapse-icon {
+  transition: transform 0.15s ease;
+}
+
+.diff-collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.diff-file-path {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--file-header-fg);
+  word-break: break-all;
+}
+
+.diff-file-header-spacer {
+  flex: 1;
+}
+
+.diff-file-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-added   { background: var(--badge-added-bg); }
+.badge-deleted { background: var(--badge-deleted-bg); }
+.badge-renamed { background: var(--badge-renamed-bg); }
+.badge-binary  { background: var(--badge-binary-bg); }
+
+/* === Stats Bar === */
+.diff-file-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.diff-stats-additions {
+  color: var(--color-diff-addition-fg);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.diff-stats-deletions {
+  color: var(--color-diff-deletion-fg);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.diff-stats-bar {
+  display: flex;
+  gap: 1px;
+}
+
+.diff-stats-block {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+}
+
+.diff-stats-block-added {
+  background-color: var(--color-diff-addition-fg);
+}
+
+.diff-stats-block-removed {
+  background-color: var(--color-diff-deletion-fg);
+}
+
+/* === Diff Table (Unified) === */
+.diff-file-body {
+  overflow-x: auto;
+}
+
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.diff-unified {
+}
+
+.diff-col-line-num {
+  width: var(--line-num-width);
+  min-width: 40px;
+}
+
+.diff-col-marker {
+  width: 20px;
+}
+
+.diff-col-content {
+  width: auto;
+}
+
+/* === Diff Line === */
+.diff-line {
+  height: 20px;
+  line-height: 20px;
+}
+
+.diff-line:hover td {
+  filter: brightness(0.97);
+}
+
+/* Line number cells */
+.diff-line-number {
+  width: var(--line-num-width);
+  min-width: 40px;
+  padding: 0 8px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-diff);
+  color: var(--line-num-fg);
+  background: var(--line-num-bg);
+  user-select: none;
+  border-right: 1px solid var(--color-border-subtle);
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+/* Marker cell (+/-/ ) */
+.diff-line-marker {
+  width: 20px;
+  padding: 0 4px;
+  text-align: center;
+  user-select: none;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-diff);
+  vertical-align: top;
+}
+
+/* Content cell */
+.diff-line-content {
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-diff);
+  white-space: pre;
+  vertical-align: top;
+  overflow: visible;
+}
+
+/* === Added lines === */
+.diff-line-added td {
+  background-color: var(--color-diff-addition-bg);
+}
+
+.diff-line-added .diff-line-number {
+  background-color: var(--color-diff-addition-num-bg);
+  color: var(--color-diff-addition-num-fg);
+}
+
+.diff-line-added .diff-line-marker {
+  color: var(--color-diff-addition-fg);
+}
+
+/* === Removed lines === */
+.diff-line-removed td {
+  background-color: var(--color-diff-deletion-bg);
+}
+
+.diff-line-removed .diff-line-number {
+  background-color: var(--color-diff-deletion-num-bg);
+  color: var(--color-diff-deletion-num-fg);
+}
+
+.diff-line-removed .diff-line-marker {
+  color: var(--color-diff-deletion-fg);
+}
+
+/* === Context lines === */
+.diff-line-context td {
+  background-color: var(--color-diff-neutral-bg);
+}
+
+.diff-line-context .diff-line-number {
+  background-color: var(--color-diff-neutral-num-bg);
+}
+
+.diff-line-context .diff-line-marker {
+  color: var(--color-fg-subtle);
+}
+
+/* === No-newline marker === */
+.diff-line-nonewline td {
+  background-color: transparent;
+}
+
+.diff-line-nonewline .diff-line-content {
+  color: var(--color-fg-muted);
+  font-style: italic;
+}
+
+/* === Empty lines (split view placeholder) === */
+.diff-line-empty td {
+  background-color: color-mix(in srgb, var(--color-canvas-subtle) 80%, transparent);
+}
+
+/* === Hunk Header === */
+.diff-hunk-header td {
+  background-color: var(--color-diff-hunk-header-bg);
+  padding: 3px 0;
+  border-top: 1px solid var(--color-border-muted);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.diff-hunk-expand {
+  background-color: var(--color-diff-hunk-header-num-bg) !important;
+}
+
+.diff-hunk-at {
+  color: var(--color-diff-hunk-header-fg);
+  font-weight: 600;
+}
+
+.diff-hunk-header-content {
+  padding-left: 8px !important;
+}
+
+.diff-hunk-ranges {
+  color: var(--color-diff-hunk-header-fg);
+  font-weight: 600;
+}
+
+.diff-hunk-context {
+  color: var(--color-fg-muted);
+  margin-left: 4px;
+}
+
+/* === Split View === */
+.diff-split-row {
+  display: flex;
+  width: 100%;
+}
+
+.diff-split-cell {
+  flex: 1;
+  overflow: hidden;
+  border-right: 1px solid var(--color-border-muted);
+}
+
+.diff-split-cell:last-child {
+  border-right: none;
+}
+
+.diff-split-inner {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* === Notices === */
+.diff-binary-notice,
+.diff-empty-notice {
+  padding: 12px 16px;
+  color: var(--color-fg-muted);
+  font-size: 12px;
+  font-style: italic;
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   Loading / Error / Empty States
+   ============================================================ */
+.diff-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px;
+  color: var(--color-fg-muted);
+}
+
+.diff-loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border-default);
+  border-top-color: var(--color-accent-fg);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.diff-error {
+  margin: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-diff-deletion-fg);
+  border-radius: 6px;
+  color: var(--color-diff-deletion-fg);
+  background: var(--color-diff-deletion-bg);
+  font-size: 13px;
+}
+
+.diff-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  gap: 12px;
+  color: var(--color-fg-muted);
+}
+
+.diff-empty-icon {
+  opacity: 0.4;
+}
+
+.diff-empty-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-fg-default);
+}
+
+.diff-empty-subtitle {
+  font-size: 14px;
+  max-width: 400px;
+}
+
+.diff-empty-example {
+  background: var(--color-canvas-subtle);
+  border: 1px solid var(--color-border-default);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-fg-default);
+}

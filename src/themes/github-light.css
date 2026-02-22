@@ -1,0 +1,82 @@
+/**
+ * GitHub Light theme variables.
+ * Colors sourced from GitHub's design system (Primer).
+ * https://primer.style/primitives/colors
+ */
+
+[data-theme="github-light"] {
+  /* Canvas / backgrounds */
+  --color-canvas-default: #ffffff;
+  --color-canvas-subtle: #f6f8fa;
+  --color-canvas-overlay: #ffffff;
+
+  /* Foreground text */
+  --color-fg-default: #1f2328;
+  --color-fg-muted: #656d76;
+  --color-fg-subtle: #6e7781;
+  --color-fg-on-emphasis: #ffffff;
+
+  /* Borders */
+  --color-border-default: #d0d7de;
+  --color-border-muted: #d8dee4;
+  --color-border-subtle: #eaeef2;
+
+  /* Accent (links) */
+  --color-accent-fg: #0969da;
+  --color-accent-emphasis: #0969da;
+  --color-accent-muted: #ddf4ff;
+  --color-accent-subtle: #ddf4ff;
+
+  /* Diff: additions */
+  --color-diff-addition-fg: #1a7f37;
+  --color-diff-addition-bg: #e6ffec;
+  --color-diff-addition-num-bg: #ccffd8;
+  --color-diff-addition-num-fg: #1a7f37;
+  --color-diff-addition-word-bg: #abf2bc;
+
+  /* Diff: deletions */
+  --color-diff-deletion-fg: #cf222e;
+  --color-diff-deletion-bg: #ffebe9;
+  --color-diff-deletion-num-bg: #ffd7d5;
+  --color-diff-deletion-num-fg: #cf222e;
+  --color-diff-deletion-word-bg: #ff8182;
+
+  /* Diff: hunk header */
+  --color-diff-hunk-header-bg: #eaf5ff;
+  --color-diff-hunk-header-fg: #0550ae;
+  --color-diff-hunk-header-num-bg: #cae8ff;
+
+  /* Neutral diff */
+  --color-diff-neutral-bg: transparent;
+  --color-diff-neutral-num-bg: var(--color-canvas-subtle);
+
+  /* Header */
+  --color-header-bg: #24292f;
+  --color-header-fg: #ffffff;
+
+  /* Toolbar */
+  --toolbar-bg: #f6f8fa;
+  --toolbar-border: #d0d7de;
+  --toolbar-fg: #1f2328;
+
+  /* File header */
+  --file-header-bg: #f6f8fa;
+  --file-header-border: #d0d7de;
+  --file-header-fg: #1f2328;
+
+  /* Line numbers */
+  --line-num-bg: #f6f8fa;
+  --line-num-fg: #656d76;
+  --line-num-width: 50px;
+
+  /* Font */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-size-diff: 12px;
+  --font-size-ui: 14px;
+
+  /* Badge colors */
+  --badge-added-bg: #1a7f37;
+  --badge-deleted-bg: #cf222e;
+  --badge-renamed-bg: #bf8700;
+  --badge-binary-bg: #6e7781;
+}

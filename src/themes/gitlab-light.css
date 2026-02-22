@@ -1,0 +1,82 @@
+/**
+ * GitLab Light theme variables.
+ * Colors inspired by GitLab's Pajamas design system.
+ * https://design.gitlab.com/product-foundations/colors
+ */
+
+[data-theme="gitlab-light"] {
+  /* Canvas */
+  --color-canvas-default: #ffffff;
+  --color-canvas-subtle: #fafafa;
+  --color-canvas-overlay: #ffffff;
+
+  /* Foreground */
+  --color-fg-default: #1f1e24;
+  --color-fg-muted: #737278;
+  --color-fg-subtle: #89888f;
+  --color-fg-on-emphasis: #ffffff;
+
+  /* Borders */
+  --color-border-default: #dbdbde;
+  --color-border-muted: #ebebef;
+  --color-border-subtle: #f0f0f4;
+
+  /* Accent */
+  --color-accent-fg: #1f75cb;
+  --color-accent-emphasis: #1f75cb;
+  --color-accent-muted: #e8f4fd;
+  --color-accent-subtle: #e8f4fd;
+
+  /* Diff: additions (GitLab green) */
+  --color-diff-addition-fg: #108548;
+  --color-diff-addition-bg: #ecfdf3;
+  --color-diff-addition-num-bg: #cbf0d9;
+  --color-diff-addition-num-fg: #108548;
+  --color-diff-addition-word-bg: #a3e7c0;
+
+  /* Diff: deletions (GitLab red) */
+  --color-diff-deletion-fg: #ae1800;
+  --color-diff-deletion-bg: #fff4f4;
+  --color-diff-deletion-num-bg: #fdd4cd;
+  --color-diff-deletion-num-fg: #ae1800;
+  --color-diff-deletion-word-bg: #f9a99c;
+
+  /* Diff: hunk header (GitLab blue) */
+  --color-diff-hunk-header-bg: #e8f4fd;
+  --color-diff-hunk-header-fg: #1f75cb;
+  --color-diff-hunk-header-num-bg: #cee5f9;
+
+  /* Neutral diff */
+  --color-diff-neutral-bg: transparent;
+  --color-diff-neutral-num-bg: var(--color-canvas-subtle);
+
+  /* Header (GitLab signature purple/orange gradient replaced by solid) */
+  --color-header-bg: #380d75;
+  --color-header-fg: #ffffff;
+
+  /* Toolbar */
+  --toolbar-bg: #fafafa;
+  --toolbar-border: #dbdbde;
+  --toolbar-fg: #1f1e24;
+
+  /* File header */
+  --file-header-bg: #fafafa;
+  --file-header-border: #dbdbde;
+  --file-header-fg: #1f1e24;
+
+  /* Line numbers */
+  --line-num-bg: #fafafa;
+  --line-num-fg: #737278;
+  --line-num-width: 50px;
+
+  /* Font */
+  --font-mono: "GitLab Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-size-diff: 12px;
+  --font-size-ui: 14px;
+
+  /* Badge colors */
+  --badge-added-bg: #108548;
+  --badge-deleted-bg: #ae1800;
+  --badge-renamed-bg: #8f5e00;
+  --badge-binary-bg: #737278;
+}

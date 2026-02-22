@@ -1,0 +1,81 @@
+/**
+ * GitHub Dark theme variables.
+ * Colors sourced from GitHub's dark mode design system (Primer).
+ */
+
+[data-theme="github-dark"] {
+  /* Canvas */
+  --color-canvas-default: #0d1117;
+  --color-canvas-subtle: #161b22;
+  --color-canvas-overlay: #161b22;
+
+  /* Foreground */
+  --color-fg-default: #e6edf3;
+  --color-fg-muted: #8d96a0;
+  --color-fg-subtle: #6e7681;
+  --color-fg-on-emphasis: #ffffff;
+
+  /* Borders */
+  --color-border-default: #30363d;
+  --color-border-muted: #21262d;
+  --color-border-subtle: #21262d;
+
+  /* Accent */
+  --color-accent-fg: #58a6ff;
+  --color-accent-emphasis: #1f6feb;
+  --color-accent-muted: #0c2d6b;
+  --color-accent-subtle: #051d4d;
+
+  /* Diff: additions */
+  --color-diff-addition-fg: #3fb950;
+  --color-diff-addition-bg: #0d2514;
+  --color-diff-addition-num-bg: #1b4721;
+  --color-diff-addition-num-fg: #3fb950;
+  --color-diff-addition-word-bg: #1a4928;
+
+  /* Diff: deletions */
+  --color-diff-deletion-fg: #f85149;
+  --color-diff-deletion-bg: #3d0c09;
+  --color-diff-deletion-num-bg: #67060c;
+  --color-diff-deletion-num-fg: #f85149;
+  --color-diff-deletion-word-bg: #8e1519;
+
+  /* Diff: hunk header */
+  --color-diff-hunk-header-bg: #0c1d38;
+  --color-diff-hunk-header-fg: #58a6ff;
+  --color-diff-hunk-header-num-bg: #0d2044;
+
+  /* Neutral diff */
+  --color-diff-neutral-bg: transparent;
+  --color-diff-neutral-num-bg: var(--color-canvas-subtle);
+
+  /* Header */
+  --color-header-bg: #161b22;
+  --color-header-fg: #e6edf3;
+
+  /* Toolbar */
+  --toolbar-bg: #161b22;
+  --toolbar-border: #30363d;
+  --toolbar-fg: #e6edf3;
+
+  /* File header */
+  --file-header-bg: #161b22;
+  --file-header-border: #30363d;
+  --file-header-fg: #e6edf3;
+
+  /* Line numbers */
+  --line-num-bg: #161b22;
+  --line-num-fg: #8d96a0;
+  --line-num-width: 50px;
+
+  /* Font */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-size-diff: 12px;
+  --font-size-ui: 14px;
+
+  /* Badge colors */
+  --badge-added-bg: #1a4721;
+  --badge-deleted-bg: #67060c;
+  --badge-renamed-bg: #5a3702;
+  --badge-binary-bg: #21262d;
+}
