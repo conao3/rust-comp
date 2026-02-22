@@ -1,5 +1,11 @@
+import React from "react";
 import type { DiffHunk, DiffLine } from "../../types/diff";
 import { DiffLineUnified, DiffLineSplitLeft, DiffLineSplitRight } from "./DiffLineView";
+import {
+  inlineDiffRemoved,
+  inlineDiffAdded,
+  renderInlineDiffHtml,
+} from "../../utils/inlineDiff";
 
 interface Props {
   hunk: DiffHunk;
@@ -33,10 +39,8 @@ export default function DiffHunkView({ hunk, language, viewMode }: Props) {
             {context && <span className="diff-hunk-context">{context}</span>}
           </td>
         </tr>
-        {/* Diff lines */}
-        {hunk.lines.map((line, i) => (
-          <DiffLineUnified key={i} line={line} language={language} />
-        ))}
+        {/* Diff lines with inline word-level highlighting for changed pairs */}
+        {buildUnifiedLinesWithInlineDiff(hunk.lines, language)}
       </>
     );
   }
@@ -104,6 +108,59 @@ export default function DiffHunkView({ hunk, language, viewMode }: Props) {
       ))}
     </>
   );
+}
+
+/**
+ * Build unified view lines with inline word-level diff highlighting.
+ * Detects consecutive removed+added line pairs and computes word diffs.
+ */
+function buildUnifiedLinesWithInlineDiff(
+  lines: DiffLine[],
+  language?: string
+): React.ReactNode[] {
+  const result: React.ReactNode[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (line.type === "removed") {
+      // Look ahead for paired added line
+      const next = lines[i + 1];
+      if (next?.type === "added") {
+        // Compute word-level inline diff
+        const removedHtml = renderInlineDiffHtml(
+          inlineDiffRemoved(line.content, next.content),
+          "inline-diff-removed"
+        );
+        const addedHtml = renderInlineDiffHtml(
+          inlineDiffAdded(line.content, next.content),
+          "inline-diff-added"
+        );
+        result.push(
+          <DiffLineUnified
+            key={i}
+            line={line}
+            language={language}
+            inlineDiffHtml={removedHtml}
+          />
+        );
+        result.push(
+          <DiffLineUnified
+            key={i + 1}
+            line={next}
+            language={language}
+            inlineDiffHtml={addedHtml}
+          />
+        );
+        i += 2;
+        continue;
+      }
+    }
+    result.push(
+      <DiffLineUnified key={i} line={line} language={language} />
+    );
+    i++;
+  }
+  return result;
 }
 
 /**

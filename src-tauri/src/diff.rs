@@ -231,11 +231,11 @@ pub fn parse_diff(diff_text: &str) -> Vec<DiffFile> {
             } else {
                 let path = line[4..].trim_start_matches("b/");
                 if path != "/dev/null" {
+                    // Capture existing language before mutable borrow
+                    let existing_lang = current_file.as_ref().and_then(|f| f.language.clone());
                     if let Some(f) = current_file.as_mut() {
                         f.new_path = path.to_string();
-                        f.language = detect_language(path).or_else(|| {
-                            current_file.as_ref().and_then(|f| f.language.clone())
-                        });
+                        f.language = detect_language(path).or(existing_lang);
                     }
                 }
             }

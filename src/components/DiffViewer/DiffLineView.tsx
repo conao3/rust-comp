@@ -20,10 +20,12 @@ function LineNumber({ num }: { num?: number }) {
 interface LineContentProps {
   content: string;
   language?: string;
+  /** Pre-computed HTML for inline word-diff (overrides syntax highlight) */
+  inlineDiffHtml?: string;
 }
 
-function LineContent({ content, language }: LineContentProps) {
-  const html = highlightLine(content, language);
+function LineContent({ content, language, inlineDiffHtml }: LineContentProps) {
+  const html = inlineDiffHtml ?? highlightLine(content, language);
   return (
     <td
       className="diff-line-content"
@@ -38,9 +40,11 @@ function LineContent({ content, language }: LineContentProps) {
 export function DiffLineUnified({
   line,
   language,
+  inlineDiffHtml,
 }: {
   line: DiffLine;
   language?: string;
+  inlineDiffHtml?: string;
 }) {
   const typeClass = {
     added: "diff-line-added",
@@ -62,8 +66,9 @@ export function DiffLineUnified({
       <LineNumber num={line.newLineNumber} />
       <td className="diff-line-marker">{marker}</td>
       <LineContent
-        content={line.type === "no_newline" ? line.content : line.content}
+        content={line.content}
         language={line.type !== "no_newline" ? language : undefined}
+        inlineDiffHtml={inlineDiffHtml}
       />
     </tr>
   );

@@ -780,3 +780,18 @@ body {
 [data-theme="gitlab-dark"] .hljs-bullet {
   color: #79c0ff;
 }
+
+/* ============================================================
+   Inline word-level diff highlighting
+   GitHub-style: darker shade within added/removed line bg
+   ============================================================ */
+
+.inline-diff-removed {
+  background-color: var(--color-diff-deletion-word-bg);
+  border-radius: 2px;
+}
+
+.inline-diff-added {
+  background-color: var(--color-diff-addition-word-bg);
+  border-radius: 2px;
+}
