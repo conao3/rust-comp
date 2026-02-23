@@ -1,0 +1,217 @@
+diff --git a/src-tauri/src/diff.rs b/src-tauri/src/diff.rs
+index 3a1b2c4..9f8e7d2 100644
+--- a/src-tauri/src/diff.rs
++++ b/src-tauri/src/diff.rs
+@@ -1,12 +1,18 @@
++use std::collections::HashMap;
++
+ use serde::{Deserialize, Serialize};
+ 
+ #[derive(Debug, Clone, Serialize, Deserialize)]
+ pub struct DiffFile {
+     pub path: String,
++    pub old_path: Option<String>,
+     pub hunks: Vec<DiffHunk>,
++    pub binary: bool,
+ }
+ 
+ #[derive(Debug, Clone, Serialize, Deserialize)]
+ pub struct DiffHunk {
+     pub header: String,
++    pub old_start: u32,
++    pub new_start: u32,
+     pub lines: Vec<DiffLine>,
+ }
+@@ -25,6 +31,8 @@ pub enum DiffLineKind {
+ 
+ pub fn parse_diff(input: &str) -> Vec<DiffFile> {
+     let mut files: Vec<DiffFile> = Vec::new();
++    let mut stats: HashMap<String, usize> = HashMap::new();
++
+     let mut current_file: Option<DiffFile> = None;
+     let mut current_hunk: Option<DiffHunk> = None;
+ 
+@@ -45,7 +53,7 @@ pub fn parse_diff(input: &str) -> Vec<DiffFile> {
+             }
+         } else if line.starts_with("diff --git") {
+             save_current(&mut files, &mut current_file, &mut current_hunk);
+-            current_file = Some(DiffFile { path: String::new(), hunks: vec![] });
++            current_file = Some(DiffFile { path: String::new(), old_path: None, hunks: vec![], binary: false });
+         } else if let Some(ref mut file) = current_file {
+             if line.starts_with("--- ") {
+                 // skip
+@@ -60,3 +68,9 @@ pub fn parse_diff(input: &str) -> Vec<DiffFile> {
+     save_current(&mut files, &mut current_file, &mut current_hunk);
+     files
+ }
++
++pub fn diff_stats(files: &[DiffFile]) -> HashMap<String, usize> {
++    files.iter().map(|f| {
++        let changes = f.hunks.iter().flat_map(|h| h.lines.iter()).count();
++        (f.path.clone(), changes)
++    }).collect()
++}
+diff --git a/src/components/DiffViewer/DiffViewer.tsx b/src/components/DiffViewer/DiffViewer.tsx
+index c2d3e4f..a1b2c3d 100644
+--- a/src/components/DiffViewer/DiffViewer.tsx
++++ b/src/components/DiffViewer/DiffViewer.tsx
+@@ -1,7 +1,10 @@
+ import React from "react";
++import { useMemo } from "react";
+ import { DiffFile } from "../../types/diff";
+ import DiffFileView from "./DiffFileView";
++import { EmptyState } from "../EmptyState";
+ 
+ interface Props {
+   files: DiffFile[];
++  filter?: string;
+ }
+ 
+@@ -9,9 +12,18 @@ interface Props {
+ export default function DiffViewer({ files }: Props) {
++export default function DiffViewer({ files, filter }: Props) {
++  const filtered = useMemo(() => {
++    if (!filter) return files;
++    return files.filter((f) => f.path.includes(filter));
++  }, [files, filter]);
++
++  if (filtered.length === 0) {
++    return <EmptyState message="No files match the current filter." />;
++  }
++
+   return (
+     <div className="diff-viewer">
+-      {files.map((file) => (
++      {filtered.map((file) => (
+         <DiffFileView key={file.path} file={file} />
+       ))}
+     </div>
+diff --git a/src/components/EmptyState.tsx b/src/components/EmptyState.tsx
+new file mode 100644
+index 0000000..5f9a1b2
+--- /dev/null
++++ b/src/components/EmptyState.tsx
+@@ -0,0 +1,18 @@
++import React from "react";
++import "./EmptyState.css";
++
++interface Props {
++  message: string;
++  icon?: string;
++}
++
++export function EmptyState({ message, icon = "🔍" }: Props) {
++  return (
++    <div className="empty-state">
++      <span className="empty-state__icon" role="img" aria-label="icon">
++        {icon}
++      </span>
++      <p className="empty-state__message">{message}</p>
++    </div>
++  );
++}
+diff --git a/src/components/EmptyState.css b/src/components/EmptyState.css
+new file mode 100644
+index 0000000..2c4e6a1
+--- /dev/null
++++ b/src/components/EmptyState.css
+@@ -0,0 +1,14 @@
++.empty-state {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  justify-content: center;
++  padding: 48px 24px;
++  color: var(--color-fg-muted);
++}
++
++.empty-state__icon {
++  font-size: 2.5rem;
++  margin-bottom: 12px;
++}
++
++.empty-state__message {
++  font-size: 0.9rem;
++  margin: 0;
++}
+diff --git a/src/hooks/useDiff.ts b/src/hooks/useDiff.ts
+index 8b1d9e2..f4c7a81 100644
+--- a/src/hooks/useDiff.ts
++++ b/src/hooks/useDiff.ts
+@@ -1,28 +1,36 @@
+-import { useState, useEffect } from "react";
++import { useState, useEffect, useCallback } from "react";
+ import { invoke } from "@tauri-apps/api/core";
+ import { DiffFile } from "../types/diff";
+ 
+ export function useDiff() {
+   const [files, setFiles] = useState<DiffFile[]>([]);
+   const [loading, setLoading] = useState(true);
+-  const [error, setError] = useState<string | null>(null);
++  const [error, setError] = useState<Error | null>(null);
+ 
+-  useEffect(() => {
+-    invoke<DiffFile[]>("get_initial_diff")
+-      .then(setFiles)
+-      .catch((e) => setError(String(e)))
+-      .finally(() => setLoading(false));
+-  }, []);
++  const load = useCallback(async () => {
++    setLoading(true);
++    setError(null);
++    try {
++      const result = await invoke<DiffFile[]>("get_initial_diff");
++      setFiles(result);
++    } catch (e) {
++      setError(e instanceof Error ? e : new Error(String(e)));
++    } finally {
++      setLoading(false);
++    }
++  }, []);
++
++  useEffect(() => { load(); }, [load]);
+ 
+-  return { files, loading, error };
++  return { files, loading, error, reload: load };
+ }
+diff --git a/Makefile b/Makefile
+index 1c2d3e4..9a8b7c6 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,10 +1,17 @@
+ BIN := comp
+ INSTALL_DIR := $(HOME)/.local/bin
++BUILD_DIR := src-tauri/target/release
+ 
+ .PHONY: build install clean dev
+ 
+ build:
+ 	pnpm tauri build
+ 
++test:
++	cd src-tauri && cargo test
++	pnpm tsc --noEmit
++
+ install: build
+-	cp src-tauri/target/release/$(BIN) $(INSTALL_DIR)/$(BIN)
++	install -Dm755 $(BUILD_DIR)/$(BIN) $(INSTALL_DIR)/$(BIN)
++	@echo "Installed to $(INSTALL_DIR)/$(BIN)"
+ 
+ clean:
+-	rm -rf src-tauri/target node_modules
++	rm -rf $(BUILD_DIR) node_modules dist
+ 
+ dev:
+ 	pnpm tauri dev
+diff --git a/src-tauri/src/main.rs b/src-tauri/src/main.rs
+index d4e5f67..b3c2a1e 100644
+--- a/src-tauri/src/main.rs
++++ b/src-tauri/src/main.rs
+@@ -8,7 +8,6 @@ use std::process::Command;
+ use std::io::{self, Read};
+ 
+ fn main() {
+-    // TODO: remove debug flag
+     let args: Vec<String> = std::env::args().collect();
+     let diff_text = if !atty::is(atty::Stream::Stdin) {
+         let mut buf = String::new();
