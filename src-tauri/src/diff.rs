@@ -137,8 +137,16 @@ pub fn parse_diff(diff_text: &str) -> Vec<DiffFile> {
     let mut new_line = 0u32;
 
     let commit_current_hunk = |file: &mut DiffFile, hunk: DiffHunk| {
-        file.additions += hunk.lines.iter().filter(|l| l.line_type == DiffLineType::Added).count() as u32;
-        file.deletions += hunk.lines.iter().filter(|l| l.line_type == DiffLineType::Removed).count() as u32;
+        file.additions += hunk
+            .lines
+            .iter()
+            .filter(|l| l.line_type == DiffLineType::Added)
+            .count() as u32;
+        file.deletions += hunk
+            .lines
+            .iter()
+            .filter(|l| l.line_type == DiffLineType::Removed)
+            .count() as u32;
         file.hunks.push(hunk);
     };
 
@@ -192,16 +200,16 @@ pub fn parse_diff(diff_text: &str) -> Vec<DiffFile> {
             }
             continue;
         }
-        if line.starts_with("rename from ") {
+        if let Some(rest) = line.strip_prefix("rename from ") {
             if let Some(f) = current_file.as_mut() {
                 f.status = FileStatus::Renamed;
-                f.old_path = line["rename from ".len()..].to_string();
+                f.old_path = rest.to_string();
             }
             continue;
         }
-        if line.starts_with("rename to ") {
+        if let Some(rest) = line.strip_prefix("rename to ") {
             if let Some(f) = current_file.as_mut() {
-                f.new_path = line["rename to ".len()..].to_string();
+                f.new_path = rest.to_string();
             }
             continue;
         }
@@ -221,15 +229,15 @@ pub fn parse_diff(diff_text: &str) -> Vec<DiffFile> {
         // --- file header lines (--- a/path, +++ b/path)
         if line.starts_with("--- ") || line.starts_with("+++ ") {
             // Update paths from these lines (more accurate than diff --git line)
-            if line.starts_with("--- ") {
-                let path = line[4..].trim_start_matches("a/");
+            if let Some(rest) = line.strip_prefix("--- ") {
+                let path = rest.trim_start_matches("a/");
                 if path != "/dev/null" {
                     if let Some(f) = current_file.as_mut() {
                         f.old_path = path.to_string();
                     }
                 }
-            } else {
-                let path = line[4..].trim_start_matches("b/");
+            } else if let Some(rest) = line.strip_prefix("+++ ") {
+                let path = rest.trim_start_matches("b/");
                 if path != "/dev/null" {
                     // Capture existing language before mutable borrow
                     let existing_lang = current_file.as_ref().and_then(|f| f.language.clone());
@@ -275,18 +283,18 @@ pub fn parse_diff(diff_text: &str) -> Vec<DiffFile> {
 
         // --- Diff lines
         if let Some(hunk) = current_hunk.as_mut() {
-            if line.starts_with('+') {
+            if let Some(rest) = line.strip_prefix('+') {
                 hunk.lines.push(DiffLine {
                     line_type: DiffLineType::Added,
-                    content: line[1..].to_string(),
+                    content: rest.to_string(),
                     old_line_number: None,
                     new_line_number: Some(new_line),
                 });
                 new_line += 1;
-            } else if line.starts_with('-') {
+            } else if let Some(rest) = line.strip_prefix('-') {
                 hunk.lines.push(DiffLine {
                     line_type: DiffLineType::Removed,
-                    content: line[1..].to_string(),
+                    content: rest.to_string(),
                     old_line_number: Some(old_line),
                     new_line_number: None,
                 });
@@ -300,8 +308,8 @@ pub fn parse_diff(diff_text: &str) -> Vec<DiffFile> {
                 });
             } else {
                 // Context line (starts with space, or empty)
-                let content = if line.starts_with(' ') {
-                    line[1..].to_string()
+                let content = if let Some(rest) = line.strip_prefix(' ') {
+                    rest.to_string()
                 } else {
                     line.to_string()
                 };

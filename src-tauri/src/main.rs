@@ -26,15 +26,13 @@ fn main() {
         let repo_path = std::env::current_dir()
             .map(|p| p.to_string_lossy().to_string())
             .unwrap_or_default();
-        rust_comp_lib::diff_util::run_git_diff(&repo_path, &args[1..])
-            .unwrap_or_default()
+        rust_comp_lib::diff_util::run_git_diff(&repo_path, &args[1..]).unwrap_or_default()
     } else {
         // comp  (no args: git diff HEAD in current dir)
         let repo_path = std::env::current_dir()
             .map(|p| p.to_string_lossy().to_string())
             .unwrap_or_default();
-        rust_comp_lib::diff_util::run_git_diff(&repo_path, &[])
-            .unwrap_or_default()
+        rust_comp_lib::diff_util::run_git_diff(&repo_path, &[]).unwrap_or_default()
     };
 
     // Write diff text to a temp file and expose via environment variable.
@@ -57,7 +55,7 @@ fn is_stdin_piped() -> bool {
     #[cfg(unix)]
     {
         use std::os::unix::io::AsRawFd;
-        unsafe { libc_isatty(io::stdin().as_raw_fd()) == 0 }
+        libc_isatty(io::stdin().as_raw_fd()) == 0
     }
     #[cfg(not(unix))]
     {
