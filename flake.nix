@@ -10,19 +10,26 @@
     };
   };
 
-  outputs = inputs@{ flake-parts, ... }:
+  outputs =
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" "aarch64-darwin" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
 
       imports = [ inputs.treefmt-nix.flakeModule ];
 
-      perSystem = { lib, system, ... }:
+      perSystem =
+        { lib, system, ... }:
         let
-          overlay = final: prev:
+          overlay =
+            final: prev:
             let
-              nodejs = prev.nodejs_24;
-              pnpm = prev.pnpm_10.override { inherit nodejs; };
-            in {
+              nodejs = prev.nodejs_latest;
+              pnpm = prev.pnpm;
+            in
+            {
               inherit nodejs pnpm;
             };
 
@@ -45,9 +52,11 @@
             darwin.apple_sdk.frameworks.AppKit
             darwin.apple_sdk.frameworks.CoreServices
           ];
-        in {
+        in
+        {
           devShells.default = pkgs.mkShell {
-            packages = with pkgs;
+            packages =
+              with pkgs;
               [
                 rustc
                 cargo
@@ -56,10 +65,10 @@
                 clippy
                 nodejs
                 pnpm
-              ] ++ lib.optionals stdenv.isLinux [ pkg-config ];
+              ]
+              ++ lib.optionals stdenv.isLinux [ pkg-config ];
 
-            buildInputs =
-              if pkgs.stdenv.isLinux then linuxBuildInputs else darwinBuildInputs;
+            buildInputs = if pkgs.stdenv.isLinux then linuxBuildInputs else darwinBuildInputs;
 
             env = lib.optionalAttrs pkgs.stdenv.isLinux {
               GIO_MODULE_PATH = "${pkgs.glib-networking}/lib/gio/modules";
