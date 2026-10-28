@@ -44,20 +44,28 @@ export default function Toolbar({ fileCount }: Props) {
         </span>
         <span className="toolbar-title">comp</span>
         {fileCount > 0 && (
-          <span className="toolbar-file-count">{fileCount} file{fileCount !== 1 ? "s" : ""}</span>
+          <span className="toolbar-file-count">
+            {fileCount} file{fileCount !== 1 ? "s" : ""}
+          </span>
         )}
       </div>
 
       <div className="toolbar-center">
         {/* UI Brand indicator */}
-        <span className={`toolbar-brand ${isGitHub ? "brand-github" : "brand-gitlab"}`}>
+        <span
+          className={`toolbar-brand ${isGitHub ? "brand-github" : "brand-gitlab"}`}
+        >
           {isGitHub ? "GitHub UI" : "GitLab UI"}
         </span>
       </div>
 
       <div className="toolbar-right">
         {/* View mode toggle */}
-        <div className="toolbar-view-toggle" role="group" aria-label="View mode">
+        <div
+          className="toolbar-view-toggle"
+          role="group"
+          aria-label="View mode"
+        >
           <button
             className={`toolbar-btn ${viewMode === "unified" ? "active" : ""}`}
             onClick={() => setViewMode("unified")}

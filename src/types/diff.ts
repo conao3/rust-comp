@@ -26,12 +26,7 @@ export interface DiffHunk {
 }
 
 export type FileStatus =
-  | "added"
-  | "deleted"
-  | "modified"
-  | "renamed"
-  | "copied"
-  | "binary";
+  "added" | "deleted" | "modified" | "renamed" | "copied" | "binary";
 
 export interface DiffFile {
   /** Original file path (before the change) */
@@ -48,7 +43,8 @@ export interface DiffFile {
   collapsed?: boolean;
 }
 
-export type ThemeName = "github-light" | "github-dark" | "gitlab-light" | "gitlab-dark";
+export type ThemeName =
+  "github-light" | "github-dark" | "gitlab-light" | "gitlab-dark";
 
 export type ViewMode = "unified" | "split";
 

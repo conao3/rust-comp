@@ -69,7 +69,9 @@
   --line-num-width: 50px;
 
   /* Font */
-  --font-mono: "GitLab Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono:
+    "GitLab Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
   --font-size-diff: 12px;
   --font-size-ui: 14px;
 
