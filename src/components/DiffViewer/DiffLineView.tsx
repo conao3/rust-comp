@@ -99,7 +99,8 @@ export function DiffLineSplitLeft({
       : line.type === "no_newline"
         ? "diff-line-nonewline"
         : "diff-line-context";
-  const marker = line.type === "removed" ? "-" : line.type === "no_newline" ? "\\" : " ";
+  const marker =
+    line.type === "removed" ? "-" : line.type === "no_newline" ? "\\" : " ";
   return (
     <tr className={`diff-line ${typeClass}`}>
       <LineNumber num={line.oldLineNumber} />
@@ -137,7 +138,8 @@ export function DiffLineSplitRight({
       : line.type === "no_newline"
         ? "diff-line-nonewline"
         : "diff-line-context";
-  const marker = line.type === "added" ? "+" : line.type === "no_newline" ? "\\" : " ";
+  const marker =
+    line.type === "added" ? "+" : line.type === "no_newline" ? "\\" : " ";
   return (
     <tr className={`diff-line ${typeClass}`}>
       <LineNumber num={line.newLineNumber} />
@@ -150,7 +152,12 @@ export function DiffLineSplitRight({
   );
 }
 
-export default function DiffLineView({ line, language, viewMode, side }: Props) {
+export default function DiffLineView({
+  line,
+  language,
+  viewMode,
+  side,
+}: Props) {
   if (viewMode === "split") {
     return side === "left" ? (
       <DiffLineSplitLeft line={line} language={language} />

@@ -27,7 +27,9 @@ function lcs(a: string[], b: string[]): ("eq" | "del" | "ins")[] {
   const n = b.length;
 
   // Build DP table
-  const dp: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  const dp: number[][] = Array.from({ length: m + 1 }, () =>
+    new Array(n + 1).fill(0),
+  );
   for (let i = m - 1; i >= 0; i--) {
     for (let j = n - 1; j >= 0; j--) {
       if (a[i] === b[j]) {
@@ -64,7 +66,7 @@ function lcs(a: string[], b: string[]): ("eq" | "del" | "ins")[] {
  */
 export function inlineDiffRemoved(
   removedLine: string,
-  addedLine: string
+  addedLine: string,
 ): InlineSegment[] {
   const tokA = tokenize(removedLine);
   const tokB = tokenize(addedLine);
@@ -102,7 +104,7 @@ export function inlineDiffRemoved(
  */
 export function inlineDiffAdded(
   removedLine: string,
-  addedLine: string
+  addedLine: string,
 ): InlineSegment[] {
   const tokA = tokenize(removedLine);
   const tokB = tokenize(addedLine);
@@ -163,13 +165,13 @@ function escHtml(s: string): string {
  */
 export function renderInlineDiffHtml(
   segments: InlineSegment[],
-  changedClass: string
+  changedClass: string,
 ): string {
   return segments
     .map((seg) =>
       seg.changed
         ? `<span class="${changedClass}">${escHtml(seg.text)}</span>`
-        : escHtml(seg.text)
+        : escHtml(seg.text),
     )
     .join("");
 }

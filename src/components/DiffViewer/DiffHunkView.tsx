@@ -1,6 +1,10 @@
 import React from "react";
 import type { DiffHunk, DiffLine } from "../../types/diff";
-import { DiffLineUnified, DiffLineSplitLeft, DiffLineSplitRight } from "./DiffLineView";
+import {
+  DiffLineUnified,
+  DiffLineSplitLeft,
+  DiffLineSplitRight,
+} from "./DiffLineView";
 import {
   inlineDiffRemoved,
   inlineDiffAdded,
@@ -51,7 +55,9 @@ export default function DiffHunkView({ hunk, language, viewMode }: Props) {
   return (
     <>
       <tr className="diff-hunk-header">
-        <td className="diff-line-number diff-hunk-at" colSpan={2}>@@</td>
+        <td className="diff-line-number diff-hunk-at" colSpan={2}>
+          @@
+        </td>
         <td className="diff-hunk-header-content">
           <span className="diff-hunk-ranges">
             {` -${hunk.oldStart},${hunk.oldCount} `}
@@ -59,7 +65,9 @@ export default function DiffHunkView({ hunk, language, viewMode }: Props) {
           {context && <span className="diff-hunk-context">{context}</span>}
         </td>
         <td className="diff-hunk-divider"></td>
-        <td className="diff-line-number diff-hunk-at" colSpan={2}>@@</td>
+        <td className="diff-line-number diff-hunk-at" colSpan={2}>
+          @@
+        </td>
         <td className="diff-hunk-header-content">
           <span className="diff-hunk-ranges">
             {` +${hunk.newStart},${hunk.newCount} `}
@@ -116,7 +124,7 @@ export default function DiffHunkView({ hunk, language, viewMode }: Props) {
  */
 function buildUnifiedLinesWithInlineDiff(
   lines: DiffLine[],
-  language?: string
+  language?: string,
 ): React.ReactNode[] {
   const result: React.ReactNode[] = [];
   let i = 0;
@@ -129,11 +137,11 @@ function buildUnifiedLinesWithInlineDiff(
         // Compute word-level inline diff
         const removedHtml = renderInlineDiffHtml(
           inlineDiffRemoved(line.content, next.content),
-          "inline-diff-removed"
+          "inline-diff-removed",
         );
         const addedHtml = renderInlineDiffHtml(
           inlineDiffAdded(line.content, next.content),
-          "inline-diff-added"
+          "inline-diff-added",
         );
         result.push(
           <DiffLineUnified
@@ -141,7 +149,7 @@ function buildUnifiedLinesWithInlineDiff(
             line={line}
             language={language}
             inlineDiffHtml={removedHtml}
-          />
+          />,
         );
         result.push(
           <DiffLineUnified
@@ -149,15 +157,13 @@ function buildUnifiedLinesWithInlineDiff(
             line={next}
             language={language}
             inlineDiffHtml={addedHtml}
-          />
+          />,
         );
         i += 2;
         continue;
       }
     }
-    result.push(
-      <DiffLineUnified key={i} line={line} language={language} />
-    );
+    result.push(<DiffLineUnified key={i} line={line} language={language} />);
     i++;
   }
   return result;
@@ -169,7 +175,7 @@ function buildUnifiedLinesWithInlineDiff(
  * Context lines appear on both sides.
  */
 function buildSplitPairs(
-  lines: DiffLine[]
+  lines: DiffLine[],
 ): [DiffLine | null, DiffLine | null][] {
   const pairs: [DiffLine | null, DiffLine | null][] = [];
   let i = 0;

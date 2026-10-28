@@ -23,7 +23,13 @@ function formatFilePath(file: DiffFile): string {
  * Render the GitHub-style additions/deletions stats bar.
  * e.g. "+3 -1" with a 5-segment colored bar.
  */
-function StatsBar({ additions, deletions }: { additions: number; deletions: number }) {
+function StatsBar({
+  additions,
+  deletions,
+}: {
+  additions: number;
+  deletions: number;
+}) {
   const total = additions + deletions;
   if (total === 0) return null;
 
@@ -36,10 +42,16 @@ function StatsBar({ additions, deletions }: { additions: number; deletions: numb
       <span className="diff-stats-deletions">-{deletions}</span>
       <div className="diff-stats-bar">
         {Array.from({ length: addedBlocks }).map((_, i) => (
-          <span key={`a${i}`} className="diff-stats-block diff-stats-block-added" />
+          <span
+            key={`a${i}`}
+            className="diff-stats-block diff-stats-block-added"
+          />
         ))}
         {Array.from({ length: removedBlocks }).map((_, i) => (
-          <span key={`r${i}`} className="diff-stats-block diff-stats-block-removed" />
+          <span
+            key={`r${i}`}
+            className="diff-stats-block diff-stats-block-removed"
+          />
         ))}
       </div>
     </div>

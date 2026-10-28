@@ -70,7 +70,7 @@ export function useDiff(): UseDiffResult {
       setError(null);
       parseAndSet(text);
     },
-    [parseAndSet]
+    [parseAndSet],
   );
 
   return {

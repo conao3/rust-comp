@@ -31,10 +31,13 @@ body,
 body {
   background-color: var(--color-canvas-default);
   color: var(--color-fg-default);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: var(--font-size-ui);
   line-height: 1.5;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 /* === App Layout === */
@@ -147,7 +150,9 @@ body {
   color: var(--color-fg-muted);
   border: none;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s;
   border-right: 1px solid var(--color-border-default);
 }
 
@@ -302,10 +307,18 @@ body {
   margin-left: auto;
 }
 
-.filetree-status-added { color: var(--color-diff-addition-fg); }
-.filetree-status-deleted { color: var(--color-diff-deletion-fg); }
-.filetree-status-modified { color: var(--color-fg-muted); }
-.filetree-status-renamed { color: var(--color-accent-fg); }
+.filetree-status-added {
+  color: var(--color-diff-addition-fg);
+}
+.filetree-status-deleted {
+  color: var(--color-diff-deletion-fg);
+}
+.filetree-status-modified {
+  color: var(--color-fg-muted);
+}
+.filetree-status-renamed {
+  color: var(--color-accent-fg);
+}
 
 /* ============================================================
    Diff Viewer
@@ -385,10 +398,18 @@ body {
   letter-spacing: 0.05em;
 }
 
-.badge-added   { background: var(--badge-added-bg); }
-.badge-deleted { background: var(--badge-deleted-bg); }
-.badge-renamed { background: var(--badge-renamed-bg); }
-.badge-binary  { background: var(--badge-binary-bg); }
+.badge-added {
+  background: var(--badge-added-bg);
+}
+.badge-deleted {
+  background: var(--badge-deleted-bg);
+}
+.badge-renamed {
+  background: var(--badge-renamed-bg);
+}
+.badge-binary {
+  background: var(--badge-binary-bg);
+}
 
 /* === Stats Bar === */
 .diff-file-stats {
@@ -557,7 +578,11 @@ body {
 
 /* === Empty lines (split view placeholder) === */
 .diff-line-empty td {
-  background-color: color-mix(in srgb, var(--color-canvas-subtle) 80%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-canvas-subtle) 80%,
+    transparent
+  );
 }
 
 /* === Hunk Header === */
@@ -644,7 +669,9 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .diff-error {

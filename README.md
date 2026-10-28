@@ -40,12 +40,12 @@ comp
 
 Use the theme selector in the toolbar (top right) to switch between:
 
-| Theme | Style |
-|-------|-------|
+| Theme        | Style                     |
+| ------------ | ------------------------- |
 | GitHub Light | GitHub default light mode |
-| GitHub Dark | GitHub dark mode |
-| GitLab Light | GitLab Pajamas light |
-| GitLab Dark | GitLab Pajamas dark |
+| GitHub Dark  | GitHub dark mode          |
+| GitLab Light | GitLab Pajamas light      |
+| GitLab Dark  | GitLab Pajamas dark       |
 
 Theme preference is saved in `localStorage` and restored on next launch.
 

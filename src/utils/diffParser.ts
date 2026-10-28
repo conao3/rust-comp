@@ -45,8 +45,13 @@ function detectLanguage(path: string): string | undefined {
 }
 
 function parseHunkHeader(
-  line: string
-): { oldStart: number; oldCount: number; newStart: number; newCount: number } | null {
+  line: string,
+): {
+  oldStart: number;
+  oldCount: number;
+  newStart: number;
+  newCount: number;
+} | null {
   const m = line.match(/^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/);
   if (!m) return null;
   return {
@@ -66,8 +71,12 @@ export function parseDiffClient(diffText: string): DiffFile[] {
 
   const commitHunk = () => {
     if (currentHunk && currentFile) {
-      const additions = currentHunk.lines.filter((l) => l.type === "added").length;
-      const deletions = currentHunk.lines.filter((l) => l.type === "removed").length;
+      const additions = currentHunk.lines.filter(
+        (l) => l.type === "added",
+      ).length;
+      const deletions = currentHunk.lines.filter(
+        (l) => l.type === "removed",
+      ).length;
       currentFile.additions += additions;
       currentFile.deletions += deletions;
       currentFile.hunks.push(currentHunk);
