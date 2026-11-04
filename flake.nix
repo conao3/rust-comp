@@ -35,9 +35,8 @@
           ];
 
           darwinBuildInputs = with pkgs; [
-            darwin.apple_sdk.frameworks.WebKit
-            darwin.apple_sdk.frameworks.AppKit
-            darwin.apple_sdk.frameworks.CoreServices
+            apple-sdk_14
+            openssl
           ];
         in
         {
@@ -53,11 +52,11 @@
                 nodejs
                 pnpm
               ]
-              ++ lib.optionals stdenv.isLinux [ pkg-config ];
+              ++ lib.optionals stdenv.hostPlatform.isLinux [ pkg-config ];
 
-            buildInputs = if pkgs.stdenv.isLinux then linuxBuildInputs else darwinBuildInputs;
+            buildInputs = if pkgs.stdenv.hostPlatform.isLinux then linuxBuildInputs else darwinBuildInputs;
 
-            env = lib.optionalAttrs pkgs.stdenv.isLinux {
+            env = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
               GIO_MODULE_PATH = "${pkgs.glib-networking}/lib/gio/modules";
             };
           };
