@@ -21,22 +21,9 @@
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       perSystem =
-        { lib, system, ... }:
+        { lib, pkgs, ... }:
         let
-          overlay =
-            final: prev:
-            let
-              nodejs = prev.nodejs_latest;
-              pnpm = prev.pnpm;
-            in
-            {
-              inherit nodejs pnpm;
-            };
-
-          pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = [ overlay ];
-          };
+          nodejs = pkgs.nodejs_26;
 
           linuxBuildInputs = with pkgs; [
             webkitgtk_4_1
