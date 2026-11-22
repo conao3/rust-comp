@@ -44,9 +44,7 @@ function detectLanguage(path: string): string | undefined {
   return ext ? map[ext] : undefined;
 }
 
-function parseHunkHeader(
-  line: string,
-): {
+function parseHunkHeader(line: string): {
   oldStart: number;
   oldCount: number;
   newStart: number;
