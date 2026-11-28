@@ -1,4 +1,12 @@
-# comp — Local Diff Viewer
+<p align="center"><img src="docs/assets/banner.png" alt="comp: A fast local diff viewer that looks like GitHub and supports GitLab themes" width="880"></p>
+
+<p align="center"><strong>A fast local diff viewer that looks like GitHub and supports GitLab themes</strong></p>
+
+<p align="center"><a href="https://github.com/conao3/rust-comp/actions/workflows/ci.yml"><img src="https://github.com/conao3/rust-comp/actions/workflows/ci.yml/badge.svg?branch=master" alt="CI"></a> <a href="https://github.com/conao3/rust-comp/stargazers"><img src="https://img.shields.io/github/stars/conao3/rust-comp?style=flat" alt="GitHub stars"></a></p>
+
+<p align="center"><a href="#features">Features</a> | <a href="#usage">Usage</a> | <a href="#installation">Installation</a> | <a href="#license">License</a></p>
+
+<h1>comp</h1>
 
 A fast, local diff viewer with **GitHub-identical UI** and GitLab theme support.
 Built with [Tauri v2](https://tauri.app/) (Rust backend) and React + TypeScript frontend.
