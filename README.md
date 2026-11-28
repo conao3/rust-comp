@@ -7,6 +7,10 @@ Built with [Tauri v2](https://tauri.app/) (Rust backend) and React + TypeScript 
 git diff | comp
 ```
 
+<img src="images/github-light.png" width="836" alt="comp showing a unified diff with the file tree in the GitHub Light theme">
+
+Screenshots show the sample data in [`test/sample.patch`](test/sample.patch).
+
 ## Features
 
 - 🎨 **GitHub-identical diff display** — exact colors, line numbers, hunk headers
@@ -37,6 +41,12 @@ comp
 ```
 
 ## Theme Switching
+
+<img src="images/github-dark.png" width="836" alt="Word-level changes in the GitHub Dark theme">
+
+<img src="images/gitlab-light.png" width="836" alt="A Makefile diff in the GitLab Light theme">
+
+Sample data from [`test/sample.patch`](test/sample.patch) in the GitHub Dark and GitLab Light themes.
 
 Use the theme selector in the toolbar (top right) to switch between:
 
